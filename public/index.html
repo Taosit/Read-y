@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Language Parser</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="main">
+<div class="container">
+    <h1 class="title">Read-y</h1>
+    <h3 class="subtitle">Welcome to Mandarin Parser!</h3>
+    <div class="input-container main-container">
+        <textarea name="inputField" id="input-field" class="text-container"></textarea>
+        <div class="character-count"><span class="count-value">0</span> character<span class="plural" hidden>s</span></div>
+    </div>
+
+    <div class="output-container main-container none-display">
+        <button class="btn top-btn" id="view-original-btn">View Original Texts</button>
+        <div class="text-container" id="display-field"><div id="display-content"></div></div>
+        <div class="controls">
+        <span class="input-group">
+            <input type="checkbox" id="display-pinyin">
+            <label for="display-pinyin">Show Pinyin</label>
+        </span>
+            <span class="input-group">
+            <input type="checkbox" id="color-coding">
+            <label for="color-coding">Color-Coding</label>
+        </span>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <div id="message" hidden>The maximally allowed length is 2000 characters</div>
+        <button class="btn bottom-btn" id="submit-btn">Submit</button>
+        <a class="btn bottom-btn none-display" id="download-btn" hidden>
+            <img width="24" height="24" src="./download.png" alt="download">
+            <p>Download</p>
+        </a>
+    </div>
+
+    <div class="loader none-display">
+        <div class="loader" id="loader"></div>
+    </div>
+</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
