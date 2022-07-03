@@ -25,26 +25,29 @@ const getParseTexts = (text) => {
 hanzi.start();
 const doc = new jsPDF();
 
-const getPinyinAndDefinition = async (words) => {
-    return words.map((word) => {
+const getPinyinAndDefinition = (words) => {
+    const wordDictionary = {};
+    words.forEach(word => {
         if (word.type !== "punct") {
-            return {...word, pinyin: pinyin(word.value, { removeNonZh: true }), definitions: hanzi.definitionLookup(word.value, "s")};
-        } else {
-            return word;
+            wordDictionary[word.value] = {
+                pinyin: pinyin(word.value, { removeNonZh: true }),
+            }
+            word.definitions = hanzi.definitionLookup(word.value, "s")
         }
     })
+    return wordDictionary;
 }
 
-app.get("/languageParser", async (req, res) => {
+app.get("/languageParser", (req, res) => {
     res.sendFile(__dirname + "/public/index.html")
 })
 
 
 app.post("/languageParser", async (req, res) => {
     const cappedInput = req.body.input.length > 2000? req.body.input.slice(0, 2000) : req.body.input;
-    let wordlist = getParseTexts(cappedInput);
-    wordlist = await getPinyinAndDefinition(wordlist);
-    const response = {wordlist}
+    const wordlist = getParseTexts(cappedInput);
+    const pinyinDictionary = getPinyinAndDefinition(wordlist);
+    const response = {wordlist, pinyinDictionary}
     res.status(200).json(response);
 })
 

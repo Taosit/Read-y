@@ -1,6 +1,8 @@
+const container = document.querySelector(".container")
+
 const inputContainer = document.querySelector(".input-container");
 const outContainer = document.querySelector(".output-container");
-const loader = document.querySelector(".loader");
+const loader = document.querySelector(".loader-container");
 
 const clearAllBtn = document.querySelector("#clear-all-btn");
 const viewOriginalBtn = document.querySelector("#view-original-btn");
@@ -19,16 +21,19 @@ const colorCodingEl = document.querySelector("#color-coding");
 
 let inputText = "";
 let paragraphs = [];
+let dictionary = {};
 const backgroundCodes = [1, 2, 3, 4, 0, 1, 2, 3];
 let lastBackgroundCode = 0;
 
 function showLoadingSpinner() {
     loader.classList.replace("none-display", "flex-display-column");
     inputContainer.hidden = true;
+    container.style.display = "none"
 }
 
 function removeLoadingSpinner() {
     loader.classList.replace("flex-display-column", "none-display");
+    container.style.display = "grid"
     outContainer.classList.replace("none-display", "flex-display-column");
     submitBtn.hidden = true;
     downloadBtn.classList.replace("none-display", "flex-display-row");
@@ -157,7 +162,7 @@ function createPunctSpan(punct) {
 function createPinyinSpan(word) {
     const span = document.createElement("span");
     span.classList.add("pinyin-span");
-    span.textContent = word?.pinyin || " ";
+    span.textContent = dictionary[word]?.pinyin || " ";
     return span;
 }
 
@@ -169,17 +174,15 @@ function createWordContainer(wordSpan, pinyinSpan) {
     return span;
 }
 
-function addPinyin(paragraphDiv, paragraphIndex) {
+function addPinyin(paragraphDiv) {
     const currentSpans = Array.from(paragraphDiv.children);
     paragraphDiv.textContent = "";
-    let numDefinitions = 0;
-    const newWordContainers = currentSpans.map((span, index) => {
+    const newWordContainers = currentSpans.map((span) => {
         let pinyinSpan;
         if (span.classList.contains("definition-term")) {
             pinyinSpan = createPinyinSpan({value: span.textContent});
-            numDefinitions++;
         } else {
-            pinyinSpan = createPinyinSpan(paragraphs[paragraphIndex][index - numDefinitions]);
+            pinyinSpan = createPinyinSpan(span.innerHTML);
         }
         return createWordContainer(span, pinyinSpan);
     })
@@ -289,7 +292,8 @@ async function submitUserInput(userInput) {
         body: JSON.stringify(inputJson)
     }
     const res = await fetch(`${baseServerUrl}/languageParser`, params);
-    const {wordlist} = await res.json();
+    const {wordlist, pinyinDictionary} = await res.json();
+    dictionary = {...dictionary, ...pinyinDictionary};
     return wordlist;
 }
 
@@ -309,9 +313,9 @@ submitBtn.addEventListener("click", (e) => {
 
         Promise.all(promiseArray).then((paragraphDivs) => {
             displayContent.append(...paragraphDivs);
+            display.appendChild(displayContent)
+            removeLoadingSpinner();
         })
-        display.appendChild(displayContent)
-        removeLoadingSpinner();
     } else {
         switchToOutputUI();
     }
@@ -342,7 +346,6 @@ userInput.addEventListener("input", (e) => {
 
 clearAllBtn.addEventListener("click", (e) => {
     e.preventDefault()
-    console.log("clicked")
     userInput.value = "";
     wordCountEl.textContent = "0";
 })

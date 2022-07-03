@@ -43,8 +43,13 @@ body {
 }
 
 .main {
+    height: 100vh;
     background-color: #8b898e;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Cpath fill='%23b8dbd1' fill-opacity='0.19' d='M14 16H9v-2h5V9.87a4 4 0 1 1 2 0V14h5v2h-5v15.95A10 10 0 0 0 23.66 27l-3.46-2 8.2-2.2-2.9 5a12 12 0 0 1-21 0l-2.89-5 8.2 2.2-3.47 2A10 10 0 0 0 14 31.95V16zm40 40h-5v-2h5v-4.13a4 4 0 1 1 2 0V54h5v2h-5v15.95A10 10 0 0 0 63.66 67l-3.47-2 8.2-2.2-2.88 5a12 12 0 0 1-21.02 0l-2.88-5 8.2 2.2-3.47 2A10 10 0 0 0 54 71.95V56zm-39 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm40-40a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm40 40a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'%3E%3C/path%3E%3C/svg%3E");}
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Cpath fill='%23b8dbd1' fill-opacity='0.19' d='M14 16H9v-2h5V9.87a4 4 0 1 1 2 0V14h5v2h-5v15.95A10 10 0 0 0 23.66 27l-3.46-2 8.2-2.2-2.9 5a12 12 0 0 1-21 0l-2.89-5 8.2 2.2-3.47 2A10 10 0 0 0 14 31.95V16zm40 40h-5v-2h5v-4.13a4 4 0 1 1 2 0V54h5v2h-5v15.95A10 10 0 0 0 63.66 67l-3.47-2 8.2-2.2-2.88 5a12 12 0 0 1-21.02 0l-2.88-5 8.2 2.2-3.47 2A10 10 0 0 0 54 71.95V56zm-39 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm40-40a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm40 40a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'%3E%3C/path%3E%3C/svg%3E");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .container {
     margin: 0 auto;
@@ -373,6 +378,7 @@ input:checked + .slider:before {
 
 .definition-term{
     position: relative;
+    font-size: 16px;
     margin-left: 6px;
     margin-bottom: 10px;
     border-radius: 0.2em;
@@ -381,7 +387,7 @@ input:checked + .slider:before {
 
 .definition-term:hover {
     cursor: pointer;
-    padding-right: 26px;
+    padding-right: 18px;
     background-color: #f3caca;
     transition: background-color 0.5s ease-in-out 0.1s,
     padding-right 0.3s;
@@ -389,11 +395,9 @@ input:checked + .slider:before {
 
 .definition-term:hover::after {
     position: absolute;
-    content: url("public/delete.png");
-    font-size: 0.7em;
-    color: darkred;
+    content: url("./delete.png");
+    margin-top: 2px;
     margin-right: 4px;
-    font-weight: bold;
 }
 
 .delete {
@@ -435,7 +439,8 @@ input:checked + .slider:before {
 }
 
 #loader {
-    border: 16px solid #f3f3f3;
+    margin: 0 auto;
+    border: 16px solid rgba(255, 255, 255, 0.2);
     border-top: 16px solid #333333;
     border-radius: 50%;
     width: 120px;
@@ -482,6 +487,6 @@ input:checked + .slider:before {
         top: -12px;
     }
     .word-span {
-        font-size: 0.8em;
+        font-size: 0.9em;
     }
 }
