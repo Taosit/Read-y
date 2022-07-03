@@ -37,22 +37,22 @@ function removeLoadingSpinner() {
 function switchToOutputUI() {
     inputContainer.hidden = true;
     outContainer.classList.replace("none-display", "flex-display-column");
-    submitBtn.style.display = "none";
+    submitBtn.hidden = true;
     downloadBtn.classList.replace("none-display", "flex-display-row");
 }
 
 function switchToInputUI() {
     inputContainer.hidden = false;
     outContainer.classList.replace("flex-display-column", "none-display");
-    submitBtn.style.display = "flex";
-    downloadBtn.style.display = "none";
+    submitBtn.hidden = false;
+    downloadBtn.classList.replace("flex-display-row", "none-display");
 }
 
 function generateRandomBackground() {
     const randomOffset = Math.floor(Math.random()*4);
     const background = backgroundCodes[lastBackgroundCode + randomOffset];
     lastBackgroundCode = background;
-    return lastBackgroundCode
+    return background;
 }
 
 function deleteDefinitions(definition) {
@@ -71,7 +71,7 @@ function createDefinitionItem(def, span) {
     const icon = document.createElement("span");
     icon.textContent = "+";
     icon.classList.add("icon");
-    icon.addEventListener("click", (e) => {
+    icon.addEventListener("click", () => {
         if (!span.parentElement.classList.contains("word-container")) {
             if (span.nextElementSibling?.classList.contains("definition-term")) {
                 span.nextElementSibling.textContent =
@@ -87,7 +87,7 @@ function createDefinitionItem(def, span) {
             const displayedDefTerm = document.createElement("span");
             displayedDefTerm.classList.add("definition-term");
             displayedDefTerm.addEventListener("click", () => deleteDefinitions(displayedDefTerm));
-            const [pinyinSpan, textSpan] = Array.from(span.parentElement.nextElementSibling.children);
+            const [ , textSpan] = Array.from(span.parentElement.nextElementSibling.children);
             if (textSpan.classList.contains("definition-term")) {
                 span.parentElement.nextElementSibling.remove();
                 displayedDefTerm.textContent =
@@ -139,7 +139,7 @@ function createWordSpan(word, count) {
     span.classList.add("word-span");
     span.classList.add("no-background-span");
     span.setAttribute("id", count);
-    span.addEventListener("click", (e) => {
+    span.addEventListener("click", () => {
         const popupDiv = createPopupDiv(span, word);
         definitionEl = popupDiv;
         document.querySelector("body").appendChild(popupDiv);
@@ -181,8 +181,7 @@ function addPinyin(paragraphDiv, paragraphIndex) {
         } else {
             pinyinSpan = createPinyinSpan(paragraphs[paragraphIndex][index - numDefinitions]);
         }
-        const wordSpanContainer = createWordContainer(span, pinyinSpan);
-        return wordSpanContainer;
+        return createWordContainer(span, pinyinSpan);
     })
     paragraphDiv.append(...newWordContainers);
 }
@@ -190,7 +189,7 @@ function addPinyin(paragraphDiv, paragraphIndex) {
 function removePinyin(paragraphDiv) {
     const currentContainers = Array.from(paragraphDiv.children);
     paragraphDiv.textContent = "";
-    const newSpans = currentContainers.map((wordContainer, index) => {
+    const newSpans = currentContainers.map((wordContainer) => {
         return wordContainer.children[1];
     })
     paragraphDiv.append(...newSpans);
@@ -202,7 +201,7 @@ function addBackground(paragraphDiv) {
     paragraphDiv.textContent = "";
     let newElements;
     if (!currentSpans[0].classList.contains("word-container")) {
-        newElements = currentSpans.map((wordSpan, index) => {
+        newElements = currentSpans.map((wordSpan) => {
             if (wordSpan.classList.contains("word-span")) {
                 wordSpan.classList.replace("no-background-span",
                     `background${generateRandomBackground()}-span`);
@@ -215,8 +214,7 @@ function addBackground(paragraphDiv) {
             if (wordContainer.children[1].classList.contains("word-span")) {
                 wordContainer.children[1].classList.replace("no-background-span",
                     `background${generateRandomBackground()}-span`);
-                const newContainer = createWordContainer(wordContainer.lastElementChild, wordContainer.firstElementChild);
-                return newContainer;
+                return createWordContainer(wordContainer.lastElementChild, wordContainer.firstElementChild);
             }
             return wordContainer;
         })
@@ -229,7 +227,7 @@ function removeBackground(paragraphDiv) {
     paragraphDiv.textContent = "";
     let newElements;
     if (!currentElements[0].classList.contains("word-container")) {
-        newElements = currentElements.map((wordSpan, index) => {
+        newElements = currentElements.map((wordSpan) => {
             if (wordSpan.classList.contains("word-span")) {
                 [0, 1, 2, 3, 4].forEach(n => {
                     wordSpan.classList.remove(`background${n}-span`);
@@ -246,8 +244,7 @@ function removeBackground(paragraphDiv) {
                 })
                 wordContainer.children[1].classList.add("no-background-span");
                 const [pinyinSpan, wordSpan] = Array.from(wordContainer.children)
-                const newContainer = createWordContainer(wordSpan, pinyinSpan);
-                return newContainer;
+                return createWordContainer(wordSpan, pinyinSpan);
             }
             return wordContainer;
         })
@@ -275,13 +272,12 @@ async function createParagraph(paragraph) {
         paragraphDiv.classList.add("paragraph-div");
         const processedParagraph = await submitUserInput(paragraph);
         paragraphs.push(processedParagraph);
-        const newParagraph = createParagraphUI(processedParagraph, paragraphDiv);
-        return newParagraph;
+        return createParagraphUI(processedParagraph, paragraphDiv);
     }
 }
 
 async function submitUserInput(userInput) {
-    const url = "http://localhost:3000/languageParser";
+    const url = "http://localhost:5000/languageParser";
     const inputJson = {
         input: userInput
     }
@@ -351,7 +347,7 @@ clearAllBtn.addEventListener("click", (e) => {
     wordCountEl.textContent = "0";
 })
 
-displayPinyinEl.addEventListener("click", (e) => {
+displayPinyinEl.addEventListener("click", () => {
     if (displayPinyinEl.checked) {
         Array.from(displayContent.children).forEach((paragraphDiv, index) => {
             addPinyin(paragraphDiv, index)
@@ -361,7 +357,7 @@ displayPinyinEl.addEventListener("click", (e) => {
     }
 });
 
-colorCodingEl.addEventListener("click", (e) => {
+colorCodingEl.addEventListener("click", () => {
     if (colorCodingEl.checked) {
         Array.from(displayContent.children).forEach(paragraphDiv => addBackground(paragraphDiv));
     } else {
