@@ -9,7 +9,7 @@ const viewOriginalBtn = document.querySelector("#view-original-btn");
 const userInput = document.querySelector("#input-field");
 const wordCountEl = document.querySelector(".count-value");
 const submitBtn = document.querySelector("#submit-btn");
-const message = document.querySelector("#message");
+const message = document.querySelector(".error-message");
 const downloadBtn = document.querySelector("#download-btn");
 const pluralEl = document.querySelector(".plural");
 const display = document.querySelector("#display-field");
@@ -326,6 +326,13 @@ viewOriginalBtn.addEventListener("click", (e) => {
     switchToInputUI();
 })
 
+const showErrorMessage = () => {
+    message.classList.replace("hide-error-message", "show-error-message")
+    setTimeout(() => {
+        message.classList.replace("show-error-message", "hide-error-message")
+    }, 3000)
+}
+
 userInput.addEventListener("input", (e) => {
     let {value} = e.target;
     if (value.length === 0) {
@@ -335,10 +342,9 @@ userInput.addEventListener("input", (e) => {
         wordCountEl.textContent = value.length;
         pluralEl.hidden = false;
         if (value.length > 2000) {
-            message.hidden = false;
+            showErrorMessage()
             submitBtn.disabled = true;
         } else {
-            message.hidden = true;
             submitBtn.disabled = false;
         }
     }
