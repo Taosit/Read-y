@@ -2,6 +2,7 @@ const inputContainer = document.querySelector(".input-container");
 const outContainer = document.querySelector(".output-container");
 const loader = document.querySelector(".loader");
 
+const clearAllBtn = document.querySelector("#clear-all-btn");
 const viewOriginalBtn = document.querySelector("#view-original-btn");
 const userInput = document.querySelector("#input-field");
 const wordCountEl = document.querySelector(".count-value");
@@ -341,6 +342,13 @@ userInput.addEventListener("input", (e) => {
             submitBtn.disabled = false;
         }
     }
+})
+
+clearAllBtn.addEventListener("click", (e) => {
+    e.preventDefault()
+    console.log("clicked")
+    userInput.value = "";
+    wordCountEl.textContent = "0";
 })
 
 displayPinyinEl.addEventListener("click", (e) => {
