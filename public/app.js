@@ -277,7 +277,7 @@ async function createParagraph(paragraph) {
 }
 
 async function submitUserInput(userInput) {
-    const url = "http://localhost:5000/languageParser";
+    const baseServerUrl = "https//read-y.herokuapp.com";
     const inputJson = {
         input: userInput
     }
@@ -288,7 +288,7 @@ async function submitUserInput(userInput) {
         },
         body: JSON.stringify(inputJson)
     }
-    const res = await fetch(url, params);
+    const res = await fetch(`${baseServerUrl}/languageParser`, params);
     const {wordlist} = await res.json();
     return wordlist;
 }
