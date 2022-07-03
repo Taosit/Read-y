@@ -5,6 +5,8 @@ const { jsPDF } = require("jspdf");
 
 const express = require("express");
 
+const port = process.env.PORT || 5000;
+
 const app = express();
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
