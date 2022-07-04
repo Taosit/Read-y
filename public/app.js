@@ -280,7 +280,7 @@ async function createParagraph(paragraph) {
 }
 
 async function submitUserInput(userInput) {
-    const baseServerUrl = "https://read-y.herokuapp.com";
+    const baseServerUrl = "http://localhost:5000";
     const inputJson = {
         input: userInput
     }
@@ -376,17 +376,29 @@ colorCodingEl.addEventListener("click", () => {
 
 downloadBtn.addEventListener("click", createPDFfromHTML);
 
+const switchBackground = (oldBackground, newBackground) => {
+    if (colorCodingEl.checked) return;
+    const wordSpans = displayContent.querySelectorAll(`.${oldBackground}`);
+    wordSpans.forEach(span => {
+        span.classList.replace(oldBackground, newBackground)
+    })
+}
+
 function createPDFfromHTML() {
     const opt = {
         pagebreak: {avoid: "span"},
         margin:       1,
-        filename:     'myfile.pdf',
+        filename:     'mandarin-text.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
     };
 
+    switchBackground("no-background-span", "white-background-span")
     html2pdf().set(opt).from(displayContent).save();
+    setTimeout(() => {
+        switchBackground("white-background-span", "no-background-span")
+    }, 0)
 }
 
 window.addEventListener('mouseup', function(event){

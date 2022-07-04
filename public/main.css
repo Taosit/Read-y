@@ -327,7 +327,11 @@ input:checked + .slider:before {
     cursor: pointer;
     filter: brightness(1.05);
     background-color: rgba(34, 255, 172, 0.3);
-    transition: all 0.5s ease-in-out 0.1s;
+    transition: all 0.3s ease-in-out;
+}
+
+.white-background-span {
+    background-color: white;
 }
 
 .no-background-span {
@@ -335,19 +339,19 @@ input:checked + .slider:before {
 }
 
 .background0-span {
-    background-color: #d3eaff;
+    background-color: #DCFDFD;
 }
 
 .background1-span {
-    background-color: #ffe2e5;
+    background-color: #EDDCFD;
 }
 
 .background2-span {
-    background-color: #daffe8;
+    background-color: #FDDCDC;
 }
 
 .background3-span {
-    background-color: #f5e0ff;
+    background-color: #ECFDDC;
 }
 
 .background4-span {
