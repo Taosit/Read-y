@@ -280,7 +280,8 @@ async function createParagraph(paragraph) {
 }
 
 async function submitUserInput(userInput) {
-    const baseServerUrl = "https://read-y.herokuapp.com";
+    const server = "heroku";
+    const baseServerUrl = server === "localHost"? "http://localhost:5000" : "https://read-y.herokuapp.com";
     const inputJson = {
         input: userInput
     }
