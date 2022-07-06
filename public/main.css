@@ -62,6 +62,9 @@ body {
     grid-template-rows: auto 1fr auto;
     width: min(80%, 1100px);
     height: 100vh;
+    height: -moz-available;
+    /*height: -webkit-fill-available;*/
+    height: fill-available;
 }
 
 .title-container {
