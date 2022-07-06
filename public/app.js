@@ -280,8 +280,8 @@ async function createParagraph(paragraph) {
 }
 
 async function submitUserInput(userInput) {
-    const server = "localhost";
-    const baseServerUrl = server === "heroku"? "http://localhost:5000" : "https://read-y.herokuapp.com";
+    const server = "heroku";
+    const baseServerUrl = server === "localhost"? "http://localhost:5000" : "https://read-y.herokuapp.com";
     const inputJson = {
         input: userInput
     }
@@ -408,3 +408,26 @@ window.addEventListener('mouseup', function(event){
         definitionEl.remove();
     }
 });
+
+
+// Calculate 1vh value in pixels
+// based on window inner height
+const vh = window.innerHeight * 0.01;
+
+// Set the CSS variable to the root element
+// Which is equal to 1vh
+document.documentElement.style.setProperty('--vh', vh + 'px');
+
+function calculateVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+}
+
+// Initial calculation
+calculateVh();
+
+// Re-calculate on resize
+window.addEventListener('resize', calculateVh);
+
+// Re-calculate on device orientation change
+window.addEventListener('orientationchange', calculateVh);
