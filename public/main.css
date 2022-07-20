@@ -426,10 +426,6 @@ input:checked + .slider:before {
 	background-color: #ecfddc;
 }
 
-.background4-span {
-	background-color: #ffe9d9;
-}
-
 .definition-div {
 	display: inline-flex;
 	padding: 5px 3px;

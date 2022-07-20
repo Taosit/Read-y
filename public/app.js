@@ -22,7 +22,7 @@ const colorCodingEl = document.querySelector("#color-coding");
 let inputText = "";
 let paragraphs = [];
 let dictionary = {};
-const backgroundCodes = [1, 2, 3, 4, 0, 1, 2, 3];
+const backgroundCodes = [1, 2, 3, 0, 1, 2];
 let lastBackgroundCode = 0;
 let firstUse = true;
 
@@ -45,7 +45,7 @@ function appendClickIcon() {
 	const hintTextContainer = document.createElement("div");
 	hintTextContainer.classList.add("hint-text-container");
 	const hintText = document.createElement("p");
-	hintText.textContent = "Click a word to view it definitions";
+	hintText.textContent = "Click a word to view it meanings";
 	hintTextContainer.append(hintText);
 	clickContainer.append(hintTextContainer);
 	displayContent.append(clickContainer);
@@ -79,7 +79,7 @@ function switchToInputUI() {
 }
 
 function generateRandomBackground() {
-	const randomOffset = Math.floor(Math.random() * 4);
+	const randomOffset = Math.floor(Math.random() * 3);
 	const background = backgroundCodes[lastBackgroundCode + randomOffset];
 	lastBackgroundCode = background;
 	return background;
@@ -335,7 +335,7 @@ async function createParagraph(paragraph) {
 }
 
 async function submitUserInput(userInput) {
-	const server = "heroku";
+	const server = "localhost";
 	const baseServerUrl =
 		server === "localhost"
 			? "http://localhost:5000"
