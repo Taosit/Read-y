@@ -4,6 +4,7 @@
   "description": "A tool to facilitate language learners to read texts in their target language ",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
