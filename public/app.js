@@ -137,11 +137,10 @@ function addDefinition(def, span) {
     )
       return;
     if (textSpan.classList.contains("definition-term")) {
-      span.parentElement.nextElementSibling.remove();
-      addNewDefinitionToExsitingSpan(def, displayedDefTerm);
-    } else {
-      displayedDefTerm.textContent = `(${def})`;
+      addNewDefinitionToExsitingSpan(def, textSpan);
+      return;
     }
+    displayedDefTerm.textContent = `(${def})`;
     const NewPinyinSpan = createPinyinSpan({
       value: displayedDefTerm.textContent,
     });
