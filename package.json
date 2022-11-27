@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "build": "webpack --mode production"
+  },
   "dependencies": {
     "hanzi": "^2.1.5",
     "pinyin-pro": "^3.10.0"
