@@ -1,5 +1,8 @@
 import { pinyin } from 'pinyin-pro';
-var hanzi = require("hanzi");
+const hanzi = require("hanzi");
+import './main.css';
+import downloadIcon from "./assets/download.png";
+import handIcon from "./assets/click.png";
 
 const container = document.querySelector(".container");
 
@@ -29,6 +32,8 @@ const backgroundCodes = [1, 2, 3, 0, 1, 2];
 let lastBackgroundCode = 0;
 let firstUse = true;
 
+downloadBtn.querySelector("img").src = downloadIcon;
+
 function showLoadingSpinner() {
   loader.classList.replace("none-display", "flex-display-column");
   inputContainer.hidden = true;
@@ -42,7 +47,7 @@ function appendClickIcon() {
   const clickImageContainer = document.createElement("div");
   clickImageContainer.classList.add("click-image-container");
   const clickIcon = document.createElement("img");
-  clickIcon.src = "./click.png";
+  clickIcon.src = handIcon;
   clickImageContainer.append(clickIcon);
   clickContainer.append(clickImageContainer);
   const hintTextContainer = document.createElement("div");
