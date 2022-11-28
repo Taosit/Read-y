@@ -2,7 +2,7 @@
 
 Put some paragraphs of Mandarin texts and discover how the app can help you read and understand Mandarin.
 
-Live on [https://read-y.herokuapp.com/](https://read-y.herokuapp.com/).
+Live on [https://read-y.netlify.app/](https://read-y.netlify.app/).
 
 ## Features
 
