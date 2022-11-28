@@ -22,12 +22,13 @@ let definitionEl;
 const displayPinyinEl = document.querySelector("#display-pinyin");
 const colorCodingEl = document.querySelector("#color-coding");
 
-let inputText = "";
 let paragraphs = [];
 let dictionary = {};
 const backgroundCodes = [1, 2, 3, 0, 1, 2];
 let lastBackgroundCode = 0;
 let firstUse = true;
+let isLoading = true;
+let isSubmitted = false;
 
 function showLoadingSpinner() {
   loader.classList.replace("none-display", "flex-display-column");
@@ -48,7 +49,7 @@ function appendClickIcon() {
   const hintTextContainer = document.createElement("div");
   hintTextContainer.classList.add("hint-text-container");
   const hintText = document.createElement("p");
-  hintText.textContent = "Click a word to view it meanings";
+  hintText.textContent = "Click a word to view its meanings";
   hintTextContainer.append(hintText);
   clickContainer.append(hintTextContainer);
   displayContent.append(clickContainer);
@@ -68,6 +69,7 @@ function removeLoadingSpinner() {
 }
 
 function switchToOutputUI() {
+  appendClickIcon();
   inputContainer.hidden = true;
   outContainer.classList.replace("none-display", "flex-display-column");
   submitBtn.hidden = true;
@@ -349,11 +351,11 @@ function createParagraphUI(paragraph, paragraphDiv) {
   return paragraphDiv;
 }
 
-async function createParagraph(paragraph) {
+function createParagraph(paragraph) {
   if (paragraph.length !== 0) {
     let paragraphDiv = document.createElement("div");
     paragraphDiv.classList.add("paragraph-div");
-    const processedParagraph = await submitUserInput(paragraph);
+    const processedParagraph = submitUserInput(paragraph);
     paragraphs.push(processedParagraph);
     return createParagraphUI(processedParagraph, paragraphDiv);
   }
@@ -381,36 +383,41 @@ const getPinyinAndDefinition = (words) => {
   return wordDictionary;
 }
 
-async function submitUserInput(userInput) {
+function resetControls() {
+  displayPinyinEl.checked = false;
+  colorCodingEl.checked = false;
+  paragraphs = [];
+  display.textContent = "";
+  displayContent.textContent = "";
+}
+
+function submitUserInput(userInput) {
   const wordlist = getParseTexts(userInput);
   const pinyinDictionary = getPinyinAndDefinition(wordlist);
   dictionary = { ...dictionary, ...pinyinDictionary };
   return wordlist;
 }
 
-submitBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (userInput.value.length === 0) return;
-  if (userInput.value !== inputText) {
-    showLoadingSpinner();
-    displayPinyinEl.checked = false;
-    colorCodingEl.checked = false;
-    inputText = userInput.value;
-    paragraphs = [];
-    display.textContent = "";
-    displayContent.textContent = "";
-    const promiseArray = userInput.value
+function generateOutputContent() {
+  const paragraphDivs = userInput.value
       .split("\n")
       .filter((paragraph) => paragraph.length > 0)
       .map((paragraph) => createParagraph(paragraph));
 
-    Promise.all(promiseArray).then((paragraphDivs) => {
-      displayContent.append(...paragraphDivs);
-      display.appendChild(displayContent);
-      removeLoadingSpinner();
-    });
-  } else {
+    displayContent.append(...paragraphDivs);
+    display.appendChild(displayContent);
+}
+
+submitBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  isSubmitted = true;
+  if (userInput.value.length === 0) return;
+  if (!isLoading) {
+    resetControls();
+    generateOutputContent();
     switchToOutputUI();
+  } else {
+    showLoadingSpinner();
   }
 });
 
@@ -513,6 +520,16 @@ window.addEventListener("mouseup", function (event) {
 });
 
 hanzi.start();
+
+window.addEventListener("load", () => {
+  isLoading = false;
+  if (isSubmitted) {
+    removeLoadingSpinner();
+    resetControls();
+    generateOutputContent();
+    switchToOutputUI();
+  }
+});
 
 const vh = window.innerHeight * 0.01;
 
