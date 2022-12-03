@@ -1,11 +1,8 @@
 import { pinyin } from 'pinyin-pro';
-var hanzi = require("hanzi");
-
-const container = document.querySelector(".container");
+const hanzi = require("hanzi");
 
 const inputContainer = document.querySelector(".input-container");
 const outContainer = document.querySelector(".output-container");
-const loader = document.querySelector(".loader-container");
 
 const clearAllBtn = document.querySelector("#clear-all-btn");
 const viewOriginalBtn = document.querySelector("#view-original-btn");
@@ -27,14 +24,6 @@ let dictionary = {};
 const backgroundCodes = [1, 2, 3, 0, 1, 2];
 let lastBackgroundCode = 0;
 let firstUse = true;
-let isLoading = true;
-let isSubmitted = false;
-
-function showLoadingSpinner() {
-  loader.classList.replace("none-display", "flex-display-column");
-  inputContainer.hidden = true;
-  container.style.display = "none";
-}
 
 function appendClickIcon() {
   if (!firstUse) return;
@@ -43,7 +32,7 @@ function appendClickIcon() {
   const clickImageContainer = document.createElement("div");
   clickImageContainer.classList.add("click-image-container");
   const clickIcon = document.createElement("img");
-  clickIcon.src = "./click.png";
+  clickIcon.src = "./click.svg";
   clickImageContainer.append(clickIcon);
   clickContainer.append(clickImageContainer);
   const hintTextContainer = document.createElement("div");
@@ -57,15 +46,6 @@ function appendClickIcon() {
     clickContainer.remove();
   }, 3000);
   firstUse = false;
-}
-
-function removeLoadingSpinner() {
-  appendClickIcon();
-  loader.classList.replace("flex-display-column", "none-display");
-  container.style.display = "grid";
-  outContainer.classList.replace("none-display", "flex-display-column");
-  submitBtn.hidden = true;
-  downloadBtn.classList.replace("none-display", "flex-display-row");
 }
 
 function switchToOutputUI() {
@@ -410,28 +390,16 @@ function generateOutputContent() {
 
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  isSubmitted = true;
   if (userInput.value.length === 0) return;
-  if (!isLoading) {
-    resetControls();
-    generateOutputContent();
-    switchToOutputUI();
-  } else {
-    showLoadingSpinner();
-  }
+  resetControls();
+  generateOutputContent();
+  switchToOutputUI();
 });
 
 viewOriginalBtn.addEventListener("click", (e) => {
   e.preventDefault();
   switchToInputUI();
 });
-
-const showErrorMessage = () => {
-  message.classList.replace("hide-error-message", "show-error-message");
-  setTimeout(() => {
-    message.classList.replace("show-error-message", "hide-error-message");
-  }, 3000);
-};
 
 userInput.addEventListener("input", (e) => {
   let { value } = e.target;
@@ -441,12 +409,6 @@ userInput.addEventListener("input", (e) => {
   } else {
     wordCountEl.textContent = value.length;
     pluralEl.hidden = false;
-    if (value.length > 2000) {
-      showErrorMessage();
-      submitBtn.disabled = true;
-    } else {
-      submitBtn.disabled = false;
-    }
   }
 });
 
@@ -516,16 +478,6 @@ window.addEventListener("mouseup", function (event) {
     event.target.parentNode.parentNode?.parentNode !== definitionEl
   ) {
     definitionEl.remove();
-  }
-});
-
-window.addEventListener("load", () => {
-  isLoading = false;
-  if (isSubmitted) {
-    removeLoadingSpinner();
-    resetControls();
-    generateOutputContent();
-    switchToOutputUI();
   }
 });
 

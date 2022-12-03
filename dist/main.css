@@ -204,9 +204,9 @@ body {
 
 .hint-text-container {
   margin-left: 0.1em;
-  background-color: #ffffff;
+  background-color: #fffef9;
   padding: 0.1em 0.6em;
-  border: 2px solid #00ed92;
+  border: 2px solid #008a55;
   border-radius: 0.3em;
   text-align: center;
 }
@@ -269,7 +269,6 @@ body {
   margin: 0 0.3em;
 }
 
-/* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -277,14 +276,12 @@ body {
   height: 20px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -468,11 +465,12 @@ input:checked + .slider:before {
 
 .definition-term:hover::after {
   position: absolute;
-  content: url("./delete.png");
-  transform: scale(0.8);
+  content: url("./remove.svg");
+  transform-origin: top right;
+  transform: scale(0.4);
   animation: fade-in 0.5s;
-  top: -6px;
-  right: -6px;
+  top: -8px;
+  right: -12px;
 }
 
 @keyframes fade-in {
