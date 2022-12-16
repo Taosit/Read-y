@@ -1,5 +1,5 @@
 import { pinyin } from 'pinyin-pro';
-const hanzi = require("hanzi");
+import { segment, definitionLookup, start } from "hanzi";
 
 const inputContainer = document.querySelector(".input-container");
 const outContainer = document.querySelector(".output-container");
@@ -9,7 +9,6 @@ const viewOriginalBtn = document.querySelector("#view-original-btn");
 const userInput = document.querySelector("#input-field");
 const wordCountEl = document.querySelector(".count-value");
 const submitBtn = document.querySelector("#submit-btn");
-const message = document.querySelector(".error-message");
 const downloadBtn = document.querySelector("#download-btn");
 const pluralEl = document.querySelector(".plural");
 const display = document.querySelector("#display-field");
@@ -342,7 +341,7 @@ function createParagraph(paragraph) {
 }
 
 const getParseTexts = (text) => {
-  const wordlist = hanzi.segment(text);
+  const wordlist = segment(text);
   const punctList = [" ", "，", "。", "、", "《", "》", "！", "？", "；", "：", "“", "”", "（", "）", "·", "—"];
   return wordlist.map((part) => {
       const type = punctList.includes(part)? "punct" : "word";
@@ -357,7 +356,7 @@ const getPinyinAndDefinition = (words) => {
           wordDictionary[word.value] = {
               pinyin: pinyin(word.value, { removeNonZh: true }),
           }
-          word.definitions = hanzi.definitionLookup(word.value, "s")
+          word.definitions = definitionLookup(word.value, "s")
       }
   })
   return wordDictionary;
@@ -481,4 +480,4 @@ window.addEventListener("mouseup", function (event) {
   }
 });
 
-hanzi.start();
+start();
