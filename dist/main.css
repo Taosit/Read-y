@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lobster+Two:wght@400;700&display=swap');
 
 :root {
   --button-color: #22ffac;
@@ -71,7 +70,7 @@ body {
 
 .title {
   font-size: min(4em, max(8vw, 2.5em));
-  font-family: Lobster;
+  font-family: 'Lobster Two', cursive;
   text-align: center;
   margin: 0.5em 0 0 0;
   user-select: none;
@@ -81,7 +80,7 @@ body {
   align-self: flex-end;
   font-size: min(1.5em, max(5vw, 1em));
   margin-top: 0;
-  font-family: Lobster;
+  font-family: 'Lobster Two', cursive;
 }
 
 .main-container {
@@ -151,6 +150,10 @@ body {
   position: absolute;
   bottom: -25px;
   right: 10px;
+}
+
+.inline-block-display {
+  display: inline-block;
 }
 
 .none-display {
@@ -346,12 +349,17 @@ input:checked + .slider:before {
   text-decoration: none;
 }
 
+#submit-btn {
+  width: 140px;
+  height: 40px;
+}
+
 .flex-display-row {
   display: flex;
   align-items: center;
 }
 
-.bottom-btn p {
+.bottom-btn span {
   font-size: 16px;
   margin: 0 0.5em;
 }
@@ -540,13 +548,12 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 
-#loader {
-  margin: 0 auto;
-  border: 16px solid rgba(255, 255, 255, 0.2);
-  border-top: 16px solid #333333;
+.loader {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid rgba(126, 255, 208, 0.5);
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 24px;
+  height: 24px;
   animation: spin 2s linear infinite;
 }
 

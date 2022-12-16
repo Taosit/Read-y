@@ -9,6 +9,7 @@ const viewOriginalBtn = document.querySelector("#view-original-btn");
 const userInput = document.querySelector("#input-field");
 const wordCountEl = document.querySelector(".count-value");
 const submitBtn = document.querySelector("#submit-btn");
+const loader = document.querySelector(".loader");
 const downloadBtn = document.querySelector("#download-btn");
 const pluralEl = document.querySelector(".plural");
 const display = document.querySelector("#display-field");
@@ -51,14 +52,15 @@ function switchToOutputUI() {
   appendClickIcon();
   inputContainer.hidden = true;
   outContainer.classList.replace("none-display", "flex-display-column");
-  submitBtn.hidden = true;
+  submitBtn.classList.replace("flex-display-row", "none-display");;
   downloadBtn.classList.replace("none-display", "flex-display-row");
 }
 
 function switchToInputUI() {
   inputContainer.hidden = false;
   outContainer.classList.replace("flex-display-column", "none-display");
-  submitBtn.hidden = false;
+  loader.classList.replace("inline-block-display", "none-display");
+  submitBtn.classList.replace("none-display", "flex-display-row");
   downloadBtn.classList.replace("flex-display-row", "none-display");
 }
 
@@ -387,9 +389,17 @@ function generateOutputContent() {
     display.appendChild(displayContent);
 }
 
+const showLoader = () => {
+  loader.classList.replace("none-display", "inline-block-display");
+};
+
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if (userInput.value.length === 0) return;
+  if (firstUse) {
+    showLoader();
+    start();
+  }
   resetControls();
   generateOutputContent();
   switchToOutputUI();
@@ -480,4 +490,4 @@ window.addEventListener("mouseup", function (event) {
   }
 });
 
-start();
+

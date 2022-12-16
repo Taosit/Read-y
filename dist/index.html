@@ -6,10 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<title>Read-y</title>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-		integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="100vh.js"></script>
 	<link rel="stylesheet" href="main.css" />
 </head>
 
@@ -62,17 +59,20 @@
 						The maximum allowed length is 2000 characters
 					</div>
 				</div>
-				<button class="btn bottom-btn" id="submit-btn">
-					<p>Submit</p>
+				<button class="btn bottom-btn flex-display-row" id="submit-btn">
+					<span>Submit</span>
+					<div class="loader none-display"></div>
 				</button>
 				<a class="btn bottom-btn none-display" id="download-btn" hidden>
 					<img width="24" height="24" src="./download.svg" alt="download" />
-					<p>Download</p>
+					<span>Download</span>
 				</a>
 			</div>
 		</div>
 	</div>
-	<script src="100vh.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+		integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="main.js"></script>
 </body>
 
