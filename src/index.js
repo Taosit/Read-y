@@ -1,5 +1,7 @@
-import { pinyin } from 'pinyin-pro';
-import { segment, definitionLookup, start } from "hanzi";
+// import { pinyin } from 'pinyin-pro';
+const getPinyin = () => import('pinyin-pro');
+const getHanzi = () => import('hanzi');
+// import { segment, definitionLookup, start } from "hanzi";
 
 const inputContainer = document.querySelector(".input-container");
 const outContainer = document.querySelector(".output-container");
@@ -332,36 +334,40 @@ function createParagraphUI(paragraph, paragraphDiv) {
   return paragraphDiv;
 }
 
-function createParagraph(paragraph) {
+async function createParagraph(paragraph) {
   if (paragraph.length !== 0) {
     let paragraphDiv = document.createElement("div");
     paragraphDiv.classList.add("paragraph-div");
-    const processedParagraph = submitUserInput(paragraph);
+    const processedParagraph = await getParagraphInfo(paragraph);
     paragraphs.push(processedParagraph);
     return createParagraphUI(processedParagraph, paragraphDiv);
   }
 }
 
-const getParseTexts = (text) => {
-  const wordlist = segment(text);
+const getParseTexts = async (text) => {
   const punctList = [" ", "，", "。", "、", "《", "》", "！", "？", "；", "：", "“", "”", "（", "）", "·", "—"];
-  return wordlist.map((part) => {
-      const type = punctList.includes(part)? "punct" : "word";
-      return {value: part, type};
-  })
+  const hanzi = await getHanzi();
+	const wordlist =  hanzi.segment(text);
+	return wordlist.map((part) => {
+		const type = punctList.includes(part)? "punct" : "word";
+		return {value: part, type};
+	})
 }
 
-const getPinyinAndDefinition = (words) => {
-  const wordDictionary = {};
-  words.forEach(word => {
-      if (word.type !== "punct") {
-          wordDictionary[word.value] = {
-              pinyin: pinyin(word.value, { removeNonZh: true }),
-          }
-          word.definitions = definitionLookup(word.value, "s")
-      }
+const getDefinitions = async (words) => {
+	const { definitionLookup } = await getHanzi();
+	return words.map(word => {
+		if (word.type === "punct") return word;
+		return {...word, definitions: definitionLookup(word.value, "s")}
+	})
+}
+
+const addPinyinToDictionary = async (words) => {
+	const { pinyin } = await getPinyin();
+	words.forEach(word => {
+		if (word.type === "punct") return
+		dictionary[word.value] = { pinyin: pinyin(word.value, { removeNonZh: true }) };
   })
-  return wordDictionary;
 }
 
 function resetControls() {
@@ -372,33 +378,36 @@ function resetControls() {
   displayContent.textContent = "";
 }
 
-function submitUserInput(userInput) {
-  const wordlist = getParseTexts(userInput);
-  const pinyinDictionary = getPinyinAndDefinition(wordlist);
-  dictionary = { ...dictionary, ...pinyinDictionary };
-  return wordlist;
+async function getParagraphInfo(paragraph) {
+  const wordlist = await getParseTexts(paragraph);
+	const wordlistWithDefinitions = await getDefinitions(wordlist);
+	await addPinyinToDictionary(wordlist)
+  return wordlistWithDefinitions;
 }
 
 function generateOutputContent() {
   const paragraphDivs = userInput.value
-      .split("\n")
-      .filter((paragraph) => paragraph.length > 0)
-      .map((paragraph) => createParagraph(paragraph));
+		.split("\n")
+		.filter((paragraph) => paragraph.length > 0)
+		.map((paragraph) => createParagraph(paragraph));
 
-    displayContent.append(...paragraphDivs);
-    display.appendChild(displayContent);
+	Promise.all(paragraphDivs).then((paragraphDivs) => {
+		displayContent.append(...paragraphDivs);
+		display.appendChild(displayContent);
+	});
 }
 
 const showLoader = () => {
   loader.classList.replace("none-display", "inline-block-display");
 };
 
-submitBtn.addEventListener("click", (e) => {
+submitBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   if (userInput.value.length === 0) return;
   if (firstUse) {
     showLoader();
-    start();
+    const hanzi = await getHanzi();
+		hanzi.start();
   }
   resetControls();
   generateOutputContent();
