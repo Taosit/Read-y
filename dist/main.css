@@ -91,6 +91,11 @@ body {
   min-height: 0;
 }
 
+.hidden-label {
+  position: fixed;
+  top: -100px;
+}
+
 .text-container {
   width: 100%;
   height: 100%;

@@ -1,7 +1,5 @@
-// import { pinyin } from 'pinyin-pro';
 const getPinyin = () => import('pinyin-pro');
 const getHanzi = () => import('hanzi');
-// import { segment, definitionLookup, start } from "hanzi";
 
 const inputContainer = document.querySelector(".input-container");
 const outContainer = document.querySelector(".output-container");
@@ -19,7 +17,9 @@ let displayContent = document.querySelector("#display-content");
 let definitionEl;
 
 const displayPinyinEl = document.querySelector("#display-pinyin");
+const pinyinSlider = document.querySelector("#pinyin-slider");
 const colorCodingEl = document.querySelector("#color-coding");
+const colorCodingSlider = document.querySelector("#color-coding-slider");
 
 let paragraphs = [];
 let dictionary = {};
@@ -436,8 +436,8 @@ clearAllBtn.addEventListener("click", (e) => {
   wordCountEl.textContent = "0";
 });
 
-displayPinyinEl.addEventListener("click", () => {
-  if (displayPinyinEl.checked) {
+const togglePinyin = () => {
+	if (displayPinyinEl.checked) {
     Array.from(displayContent.children).forEach((paragraphDiv, index) => {
       addPinyin(paragraphDiv, index);
     });
@@ -446,10 +446,18 @@ displayPinyinEl.addEventListener("click", () => {
       removePinyin(paragraphDiv)
     );
   }
-});
+};
 
-colorCodingEl.addEventListener("click", () => {
-  if (colorCodingEl.checked) {
+displayPinyinEl.addEventListener("click", togglePinyin);
+
+pinyinSlider.addEventListener("keypress", (e) => {
+	if (e.key !== "Enter") return;
+	displayPinyinEl.checked = !displayPinyinEl.checked;
+	togglePinyin();
+})
+
+const toggleColorCoding = () => {
+	if (colorCodingEl.checked) {
     Array.from(displayContent.children).forEach((paragraphDiv) =>
       addBackground(paragraphDiv)
     );
@@ -458,7 +466,15 @@ colorCodingEl.addEventListener("click", () => {
       removeBackground(paragraphDiv)
     );
   }
-});
+}
+
+colorCodingEl.addEventListener("click", toggleColorCoding);
+
+colorCodingSlider.addEventListener("keypress", (e) => {
+	if (e.key !== "Enter") return;
+	colorCodingEl.checked = !colorCodingEl.checked;
+	toggleColorCoding();
+})
 
 downloadBtn.addEventListener("click", createPDFfromHTML);
 
